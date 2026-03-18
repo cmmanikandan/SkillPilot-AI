@@ -1,0 +1,8 @@
+{
+  "name": "SkillPilot AI – Your AI-Powered Learning Copilot",
+  "description": "A modern, premium SaaS-style learning platform featuring AI-generated curriculum, intelligent mentoring, coding practice, and gamified progress tracking.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
