@@ -110,26 +110,26 @@ export const Dashboard: React.FC<{ setActiveTab?: (tab: string) => void }> = ({ 
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 md:gap-4 px-2 md:px-0">
         <div>
-          <h1 className="text-4xl font-black tracking-tight mb-2">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight mb-2 text-center md:text-left">
             Welcome back, <span className="text-brand-purple">{profile?.displayName?.split(' ')[0] || 'Explorer'}</span>!
           </h1>
-          <p className="text-slate-400 flex items-center gap-2">
+          <p className="text-slate-400 flex items-center gap-2 text-center md:text-left text-sm md:text-base">
             <Clock size={16} /> You've completed {completedCount} days of your journey. Keep it up!
           </p>
         </div>
         <button 
           onClick={() => setActiveTab?.('curriculum')}
           aria-label={mainProgress?.isFinished ? 'View Certificate' : `Continue Day ${currentDay}`}
-          className="px-6 py-3 bg-brand-purple rounded-xl font-bold neon-glow flex items-center gap-2 self-start hover:scale-105 transition-transform"
+          className="w-full md:w-auto px-4 py-2 md:px-6 md:py-3 bg-brand-purple rounded-xl font-bold neon-glow flex items-center justify-center gap-2 hover:scale-105 transition-transform mt-2 md:mt-0"
         >
           {mainProgress?.isFinished ? 'View Certificate' : `Continue Day ${currentDay}`} <ChevronRight size={20} />
         </button>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {stats.map((s, i) => (
           <motion.div
             key={i}
@@ -153,9 +153,9 @@ export const Dashboard: React.FC<{ setActiveTab?: (tab: string) => void }> = ({ 
       </div>
 
       {/* Charts Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8">
         <div className="lg:col-span-2 space-y-8">
-          <div className="glass p-8 rounded-[2rem]">
+          <div className="glass p-4 md:p-8 rounded-[2rem]">
             <div className="flex items-center justify-between mb-8">
               <h3 className="text-xl font-bold">Learning Activity</h3>
               <select className="bg-white/5 border border-white/10 rounded-lg px-3 py-1 text-sm outline-none">
@@ -186,7 +186,7 @@ export const Dashboard: React.FC<{ setActiveTab?: (tab: string) => void }> = ({ 
           </div>
 
           {/* Live Activity Feed */}
-          <div className="glass p-8 rounded-[2rem]">
+          <div className="glass p-4 md:p-8 rounded-[2rem]">
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-2">
                 <h3 className="text-xl font-bold">Live Global Activity</h3>
@@ -230,7 +230,7 @@ export const Dashboard: React.FC<{ setActiveTab?: (tab: string) => void }> = ({ 
             <BadgesSection />
           </div>
 
-          <div className="glass p-8 rounded-[2rem] flex flex-col">
+          <div className="glass p-4 md:p-8 rounded-[2rem] flex flex-col">
             <h3 className="text-xl font-bold mb-6">Skill Mastery</h3>
             <div className="space-y-6 flex-1">
               {userSkills.map((skill: any, i: number) => (
@@ -267,7 +267,7 @@ export const Dashboard: React.FC<{ setActiveTab?: (tab: string) => void }> = ({ 
           </div>
 
           {/* Help & Training Card */}
-          <div className="glass p-8 rounded-[2rem] bg-gradient-to-br from-brand-blue/10 to-transparent border-brand-blue/20">
+          <div className="glass p-4 md:p-8 rounded-[2rem] bg-gradient-to-br from-brand-blue/10 to-transparent border-brand-blue/20">
             <h3 className="text-xl font-bold mb-4">New to SkillPilot?</h3>
             <p className="text-sm text-slate-400 mb-6 leading-relaxed">
               Learn how to maximize your learning with our platform guide and AI mentor tips.
@@ -282,7 +282,7 @@ export const Dashboard: React.FC<{ setActiveTab?: (tab: string) => void }> = ({ 
           </div>
 
           {/* Extra Courses Promo */}
-          <div className="glass p-8 rounded-[2rem] bg-gradient-to-br from-brand-purple/10 to-transparent border-brand-purple/20">
+          <div className="glass p-4 md:p-8 rounded-[2rem] bg-gradient-to-br from-brand-purple/10 to-transparent border-brand-purple/20">
             <h3 className="text-xl font-bold mb-4">Master New Skills</h3>
             <p className="text-sm text-slate-400 mb-6 leading-relaxed">
               Enroll in intensive 7-day courses for Python, Java, React, and more.
