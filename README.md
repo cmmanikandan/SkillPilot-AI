@@ -18,3 +18,4 @@ View your app in AI Studio: https://ai.studio/apps/0efd9029-54f2-4c73-9c55-f0e66
 2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
 3. Run the app:
    `npm run dev`
+"# SkillPilot-AI"  
