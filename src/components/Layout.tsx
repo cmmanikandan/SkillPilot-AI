@@ -77,6 +77,7 @@ interface LayoutProps {
 export const Layout: React.FC<LayoutProps> = ({ children, activeTab, setActiveTab }) => {
   const { profile, levelUp, clearLevelUp } = useAuth();
   const [isCollapsed, setIsCollapsed] = React.useState(false);
+  const [showMobileNav, setShowMobileNav] = React.useState(false);
 
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -210,19 +211,52 @@ export const Layout: React.FC<LayoutProps> = ({ children, activeTab, setActiveTa
           {children}
         </div>
 
-        {/* Bottom Navigation for Mobile */}
-        <nav className="fixed bottom-0 left-0 right-0 z-50 bg-brand-dark border-t border-white/10 flex justify-around items-center h-16 md:hidden">
-          {menuItems.map((item) => (
-            <button
-              key={item.id}
-              onClick={() => setActiveTab(item.id)}
-              className={`flex flex-col items-center justify-center flex-1 py-2 ${activeTab === item.id ? 'text-brand-purple' : 'text-slate-400'}`}
-            >
-              <item.icon size={24} />
-              <span className="text-xs">{item.label}</span>
-            </button>
-          ))}
+        {/* Bottom Navigation for Mobile with open/hide icon */}
+        <nav className="fixed bottom-0 left-0 right-0 z-50 bg-brand-dark border-t border-white/10 flex justify-between items-center h-16 md:hidden px-2">
+          <button
+            className="flex flex-col items-center justify-center py-2 text-slate-400"
+            onClick={() => setShowMobileNav(true)}
+            aria-label="Open navigation menu"
+          >
+            <svg width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+            <span className="text-xs">Menu</span>
+          </button>
+          <button
+            className={`flex flex-col items-center justify-center py-2 ${activeTab === 'dashboard' ? 'text-brand-purple' : 'text-slate-400'}`}
+            onClick={() => setActiveTab('dashboard')}
+            aria-label="Dashboard"
+          >
+            <LayoutDashboard size={24} />
+            <span className="text-xs">Dashboard</span>
+          </button>
         </nav>
+
+        {/* Mobile Nav Modal */}
+        {showMobileNav && (
+          <div className="fixed inset-0 z-[100] bg-black/70 flex flex-col md:hidden">
+            <div className="flex justify-end p-4">
+              <button
+                className="text-white bg-brand-dark rounded-full p-2"
+                onClick={() => setShowMobileNav(false)}
+                aria-label="Close navigation menu"
+              >
+                <svg width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"/></svg>
+              </button>
+            </div>
+            <nav className="flex-1 flex flex-col items-center justify-center gap-6">
+              {menuItems.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => { setActiveTab(item.id); setShowMobileNav(false); }}
+                  className={`flex flex-col items-center justify-center py-4 w-40 rounded-xl text-lg font-bold ${activeTab === item.id ? 'text-brand-purple bg-white/10' : 'text-white bg-white/5 hover:bg-white/10'}`}
+                >
+                  <item.icon size={32} />
+                  <span>{item.label}</span>
+                </button>
+              ))}
+            </nav>
+          </div>
+        )}
       </main>
     </div>
   );
