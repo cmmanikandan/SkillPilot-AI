@@ -7,7 +7,7 @@ const apiKey = typeof process !== 'undefined' && process.env?.GEMINI_API_KEY
 const ai = new GoogleGenAI({ apiKey });
 
 export const generateCurriculum = async (onboardingData: any) => {
-  const model = "gemini-3-flash-preview";
+  const model = "gemini-2.5-flash";
   const prompt = `Generate a 30-day personalized learning curriculum for a user with the following profile:
     Role: ${onboardingData.role}
     Skills: ${onboardingData.skills.join(", ")}
@@ -60,7 +60,7 @@ export const generateCurriculum = async (onboardingData: any) => {
 };
 
 export const generateExtraCourse = async (topic: string, profile: any) => {
-  const model = "gemini-3-flash-preview";
+  const model = "gemini-2.5-flash";
   const prompt = `Generate a 7-day intensive learning curriculum for the topic: "${topic}".
     The user's current profile is:
     Role: ${profile.role}
@@ -119,7 +119,7 @@ export const chatWithMentorStream = async (message: string, history: any[]) => {
   }));
 
   const chat = ai.chats.create({
-    model: "gemini-3-flash-preview",
+    model: "gemini-2.5-flash",
     history: formattedHistory,
     config: {
       systemInstruction: "You are SkillPilot AI Mentor. Provide simple, direct, and easy-to-understand answers. Avoid overly technical jargon unless necessary. Be concise but helpful.",
@@ -130,7 +130,7 @@ export const chatWithMentorStream = async (message: string, history: any[]) => {
 };
 
 export const generateSuggestions = async (topic: string, day: number) => {
-  const model = "gemini-3-flash-preview";
+  const model = "gemini-2.5-flash";
   const prompt = `Based on the topic "${topic}" for Day ${day} of a learning curriculum, suggest 3 interesting and helpful questions a student might ask their AI mentor to deepen their understanding.
     
     Return a JSON array of 3 strings.`;
@@ -151,7 +151,7 @@ export const generateSuggestions = async (topic: string, day: number) => {
 };
 
 export const evaluateQuiz = async (question: string, userAnswer: string) => {
-  const model = "gemini-3-flash-preview";
+  const model = "gemini-2.5-flash";
   const prompt = `Evaluate the following short answer quiz response:
     Question: ${question}
     User Answer: ${userAnswer}
@@ -186,7 +186,7 @@ export const evaluateQuiz = async (question: string, userAnswer: string) => {
 };
 
 export const generateQuiz = async (topic: string, difficulty: string, isFinal: boolean = false) => {
-  const model = "gemini-3-flash-preview";
+  const model = "gemini-2.5-flash";
   const prompt = isFinal
     ? `Generate a comprehensive final exam for the course: "${topic}" at a ${difficulty} difficulty level.
     The exam MUST consist of exactly 10 Multiple Choice Questions (MCQ) covering various aspects of the topic.
@@ -243,7 +243,7 @@ export const generateQuiz = async (topic: string, difficulty: string, isFinal: b
 };
 
 export const generateFlashcards = async (topic: string) => {
-  const model = "gemini-3-flash-preview";
+  const model = "gemini-2.5-flash";
   const prompt = `Generate a set of 5 key flashcards for the topic: "${topic}".
     Return a JSON object with:
     - flashcards: array of objects
@@ -279,7 +279,7 @@ export const generateFlashcards = async (topic: string) => {
 };
 
 export const generateCapstone = async (courseTitle: string) => {
-  const model = "gemini-3-flash-preview";
+  const model = "gemini-2.5-flash";
   const prompt = `Generate a comprehensive final Capstone Project specification for a student who just completed a course on "${courseTitle}".
     The project should be a practical, real-world application of the skills learned.
     
