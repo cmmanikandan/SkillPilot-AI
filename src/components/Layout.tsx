@@ -171,93 +171,125 @@ export const Layout: React.FC<LayoutProps> = ({ children, activeTab, setActiveTa
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-semibold truncate">{profile?.displayName || 'Explorer'}</p>
                 <div className="flex items-center justify-between text-[10px] text-slate-500 mb-1">
-                  <span>Level {profile?.level || 1}</span>
-                  <span>{profile?.xpProgress || 0} / {profile?.xpRequired || 250} XP</span>
-                </div>
-                <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
-                  <motion.div 
-                    initial={{ width: 0 }}
-                    animate={{ width: `${((profile?.xpProgress || 0) / (profile?.xpRequired || 250)) * 100}%` }}
-                    className="h-full bg-brand-purple"
-                  />
-                </div>
-              </div>
-            </div>
-          )}
-          <button 
-            onClick={() => auth.signOut()}
-            className="w-full flex items-center gap-4 px-4 py-3 rounded-xl text-slate-400 hover:bg-red-500/10 hover:text-red-400 transition-all duration-200"
-          >
-            <LogOut size={22} />
-            {!isCollapsed && <span className="font-medium">Logout</span>}
-          </button>
-        </div>
-      </motion.aside>
+                  return (
+                    <div className="flex flex-col h-screen overflow-hidden">
+                      {/* Top Nav Bar */}
+                      <header className="w-full bg-brand-dark border-b border-white/10 flex items-center justify-between px-4 py-3 z-50">
+                        <div className="flex items-center gap-2 font-bold text-xl bg-gradient-to-r from-brand-blue to-brand-purple bg-clip-text text-transparent select-none">
+                          <Zap className="text-brand-purple fill-brand-purple" size={24} />
+                          SkillPilot
+                        </div>
+                        <button
+                          className="p-2 hover:bg-white/5 rounded-lg transition-colors text-slate-400 md:block"
+                          aria-label={isCollapsed ? 'Show sidebar' : 'Hide sidebar'}
+                          onClick={() => setIsCollapsed(!isCollapsed)}
+                        >
+                          {/* 3-dot icon */}
+                          <svg width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>
+                        </button>
+                      </header>
 
-      {/* Main Content */}
-      <main className="flex-1 overflow-y-auto relative w-full max-w-full">
-        {/* Live Ticker */}
-        <div className="bg-brand-purple/10 border-b border-white/5 py-2 px-4 md:px-8 overflow-hidden whitespace-nowrap">
-          <motion.div 
-            animate={{ x: [0, -1000] }}
-            transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-            className="flex items-center gap-6 md:gap-12 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400"
-          >
-            {/* ...existing code... */}
-          </motion.div>
-        </div>
+                      <div className="flex flex-1 overflow-hidden">
+                        {levelUp && <LevelUpCelebration level={levelUp} onClose={clearLevelUp} />}
+                        {/* Sidebar: hidden on mobile */}
+                        <motion.aside
+                          initial={false}
+                          animate={{ width: isCollapsed ? '80px' : '260px' }}
+                          className="glass border-r border-white/10 flex flex-col z-50 hidden md:flex overflow-y-auto scrollbar-thin scrollbar-thumb-brand-purple/40 scrollbar-track-transparent"
+                          style={{ minWidth: isCollapsed ? 80 : 260, maxWidth: isCollapsed ? 80 : 260 }}
+                        >
+                          <div className="p-6 flex flex-col gap-4">
+                            <div className="flex items-center justify-between">
+                              {!isCollapsed && (
+                                <motion.div 
+                                  initial={{ opacity: 0 }}
+                                  animate={{ opacity: 1 }}
+                                  className="flex items-center gap-2 font-bold text-xl bg-gradient-to-r from-brand-blue to-brand-purple bg-clip-text text-transparent"
+                                >
+                                  <Zap className="text-brand-purple fill-brand-purple" size={24} />
+                                  SkillPilot AI
+                                </motion.div>
+                              )}
+                            </div>
+                            {!isCollapsed && (
+                              <div className="flex items-center gap-2 px-2">
+                                <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-500 text-[10px] font-bold uppercase tracking-wider animate-pulse border border-emerald-500/20">
+                                  <div className="w-1 h-1 rounded-full bg-emerald-500" />
+                                  Live Session
+                                </div>
+                                <div className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">
+                                  v2.4.0
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                          ...existing code...
+                        </motion.aside>
 
-        <div className="max-w-full md:max-w-7xl mx-auto p-2 sm:p-4 md:p-8">
-          {children}
-        </div>
+                        {/* Main Content */}
+                        <main className="flex-1 overflow-y-auto relative w-full max-w-full">
+                          {/* Live Ticker */}
+                          <div className="bg-brand-purple/10 border-b border-white/5 py-2 px-4 md:px-8 overflow-hidden whitespace-nowrap">
+                            <motion.div 
+                              animate={{ x: [0, -1000] }}
+                              transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+                              className="flex items-center gap-6 md:gap-12 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400"
+                            >
+                              {/* ...existing code... */}
+                            </motion.div>
+                          </div>
 
-        {/* Bottom Navigation for Mobile with open/hide icon */}
-        <nav className="fixed bottom-0 left-0 right-0 z-50 bg-brand-dark border-t border-white/10 flex justify-between items-center h-16 md:hidden px-2">
-          <button
-            className="flex flex-col items-center justify-center py-2 text-slate-400"
-            onClick={() => setShowMobileNav(true)}
-            aria-label="Open navigation menu"
-          >
-            <svg width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
-            <span className="text-xs">Menu</span>
-          </button>
-          <button
-            className={`flex flex-col items-center justify-center py-2 ${activeTab === 'dashboard' ? 'text-brand-purple' : 'text-slate-400'}`}
-            onClick={() => setActiveTab('dashboard')}
-            aria-label="Dashboard"
-          >
-            <LayoutDashboard size={24} />
-            <span className="text-xs">Dashboard</span>
-          </button>
-        </nav>
+                          <div className="max-w-full md:max-w-7xl mx-auto p-2 sm:p-4 md:p-8">
+                            {children}
+                          </div>
 
-        {/* Mobile Nav Modal */}
-        {showMobileNav && (
-          <div className="fixed inset-0 z-[100] bg-black/70 flex flex-col md:hidden">
-            <div className="flex justify-end p-4">
-              <button
-                className="text-white bg-brand-dark rounded-full p-2"
-                onClick={() => setShowMobileNav(false)}
-                aria-label="Close navigation menu"
-              >
-                <svg width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"/></svg>
-              </button>
-            </div>
-            <nav className="flex-1 flex flex-col items-center justify-center gap-6">
-              {menuItems.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => { setActiveTab(item.id); setShowMobileNav(false); }}
-                  className={`flex flex-col items-center justify-center py-4 w-40 rounded-xl text-lg font-bold ${activeTab === item.id ? 'text-brand-purple bg-white/10' : 'text-white bg-white/5 hover:bg-white/10'}`}
-                >
-                  <item.icon size={32} />
-                  <span>{item.label}</span>
-                </button>
-              ))}
-            </nav>
-          </div>
-        )}
-      </main>
-    </div>
-  );
-};
+                          {/* Bottom Navigation for Mobile with open/hide icon */}
+                          <nav className="fixed bottom-0 left-0 right-0 z-50 bg-brand-dark border-t border-white/10 flex justify-between items-center h-16 md:hidden px-2">
+                            <button
+                              className="flex flex-col items-center justify-center py-2 text-slate-400"
+                              onClick={() => setShowMobileNav(true)}
+                              aria-label="Open navigation menu"
+                            >
+                              <svg width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+                              <span className="text-xs">Menu</span>
+                            </button>
+                            <button
+                              className={`flex flex-col items-center justify-center py-2 ${activeTab === 'dashboard' ? 'text-brand-purple' : 'text-slate-400'}`}
+                              onClick={() => setActiveTab('dashboard')}
+                              aria-label="Dashboard"
+                            >
+                              <LayoutDashboard size={24} />
+                              <span className="text-xs">Dashboard</span>
+                            </button>
+                          </nav>
+
+                          {/* Mobile Nav Modal */}
+                          {showMobileNav && (
+                            <div className="fixed inset-0 z-[100] bg-black/70 flex flex-col md:hidden">
+                              <div className="flex justify-end p-4">
+                                <button
+                                  className="text-white bg-brand-dark rounded-full p-2"
+                                  onClick={() => setShowMobileNav(false)}
+                                  aria-label="Close navigation menu"
+                                >
+                                  <svg width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"/></svg>
+                                </button>
+                              </div>
+                              <nav className="flex-1 flex flex-col items-center justify-center gap-6">
+                                {menuItems.map((item) => (
+                                  <button
+                                    key={item.id}
+                                    onClick={() => { setActiveTab(item.id); setShowMobileNav(false); }}
+                                    className={`flex flex-col items-center justify-center py-4 w-40 rounded-xl text-lg font-bold ${activeTab === item.id ? 'text-brand-purple bg-white/10' : 'text-white bg-white/5 hover:bg-white/10'}`}
+                                  >
+                                    <item.icon size={32} />
+                                    <span>{item.label}</span>
+                                  </button>
+                                ))}
+                              </nav>
+                            </div>
+                          )}
+                        </main>
+                      </div>
+                    </div>
+                  );
