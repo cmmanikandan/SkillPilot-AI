@@ -1,7 +1,4 @@
 import { useState } from 'react';
-import { isMobileDevice } from './lib/isMobile';
-import MobileView from './components/MobileView';
-import TVShowWebView from './components/TVShowWebView';
 import { AuthProvider, useAuth } from './lib/useAuth';
 import { LandingPage } from './components/LandingPage';
 import { Layout } from './components/Layout';
@@ -23,8 +20,6 @@ import { db } from './lib/firebase';
 import { useEffect } from 'react';
 
 function AppContent() {
-  // Device detection
-  const isMobile = isMobileDevice();
   const { user, loading } = useAuth();
   const [activeTab, setActiveTab] = useState('dashboard');
 
@@ -41,11 +36,34 @@ function AppContent() {
     testConnection();
   }, []);
 
-  if (isMobile) {
-    return <MobileView />;
-  } else {
-    return <TVShowWebView />;
+  if (loading) {
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <div className="w-12 h-12 border-4 border-brand-purple border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
   }
+
+  if (!user) {
+    return <LandingPage />;
+  }
+
+  return (
+    <Layout activeTab={activeTab} setActiveTab={setActiveTab}>
+      {activeTab === 'dashboard' && <Dashboard setActiveTab={setActiveTab} />}
+      {activeTab === 'curriculum' && <CurriculumView type="main" />}
+      {activeTab === 'coding' && <CodingLab />}
+      {activeTab === 'mentor' && <AIMentor />}
+      {activeTab === 'games' && <TechGames />}
+      {activeTab === 'profile' && <ProfileView />}
+      {activeTab === 'leaderboard' && <LeaderboardView />}
+      {activeTab === 'achievements' && <AchievementsView />}
+      {activeTab === 'store' && <StoreView />}
+      {activeTab === 'extra' && <ExtraCourses onCourseStarted={(courseId) => setActiveTab(`extra-course-${courseId}`)} onContinueCourse={(courseId) => setActiveTab(`extra-course-${courseId}`)} />}
+      {activeTab.startsWith('extra-course-') && <CurriculumView type="extra" courseId={activeTab.replace('extra-course-', '')} onBack={() => setActiveTab('extra')} />}
+      {activeTab === 'guide' && <PlatformGuide />}
+    </Layout>
+  );
 }
 
 export default function App() {
